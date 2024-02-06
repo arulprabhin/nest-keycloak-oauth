@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseInterceptors } from '@nestjs/common';
 import {
   AuthenticatedUser,
   Public,
@@ -6,8 +6,10 @@ import {
   Unprotected,
 } from 'nest-keycloak-connect';
 import { UserService } from '../Service/User';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller()
+@UseInterceptors(CacheInterceptor)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
