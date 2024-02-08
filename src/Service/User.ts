@@ -1,8 +1,8 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { jsonToQs } from '../Util/query';
-import { HttpService } from '@nestjs/axios';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
@@ -12,8 +12,10 @@ export class UserService {
   ) {}
 
   getHello(): string {
-    console.log(this.configService.get<string>('DB_HOST', 'localhost'));
-    console.log(this.configService.get<number>('DB_PORT', 5432));
+    console.log(
+      'HOST-> ' + this.configService.get<string>('DB_HOST', 'localhost'),
+    );
+    console.log('PORT-> ' + this.configService.get<number>('DB_PORT', 5432));
     return 'Hello';
   }
 

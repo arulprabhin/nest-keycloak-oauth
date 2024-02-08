@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './Config/App';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AppModule } from './Core/App';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -14,13 +14,23 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The cats API description')
-    .setVersion('1.0')
-    .addTag('cats')
+    .setTitle('Wellspring Cyber platform API')
+    .setDescription('API Server v2')
+    .setVersion('2.0')
+    .setTermsOfService('toc')
+    .addServer('http://localhost:4000/', 'Local environment')
+    .addServer('http:/10.4.0.22/', 'Staging')
+    .addServer('http://10.4.0.14/', 'Production')
+    .setContact(
+      'Wellspring AI',
+      'https://wellspring.ai',
+      'info@wellspringsys.com',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api-doc', app, document);
+  SwaggerModule.setup('api-doc', app, document, {
+    customSiteTitle: 'Wellspring platform APIs',
+  });
 
   app.enableCors({
     origin: '*',
